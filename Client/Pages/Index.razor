@@ -1,0 +1,48 @@
+﻿@page "/"
+@using MidExam.Shared.Models;
+@inject HttpClient Http
+@using System.Net.Http.Json;
+
+<h3>Student List</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Semester</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if(person1 == null)
+        {
+            <tr>
+                <td colspan="8" align="center">No data found</td>
+            </tr>
+        }
+        else
+        {
+            @foreach(var person in person1)
+            {
+                <tr>
+                    <td width="10%">@person1.Id</td>
+                    <td width="10%">@person1.Name</td>
+                    <td width="10%">@person1.Semester</td>
+                </tr>
+            }
+        }
+    </tbody>
+
+</table>
+@code{
+    private Persons[]? person1;
+    protected override async Task OnInitializedAsync()
+    {
+        await this.FetEmployees();
+    }
+    private async Task FetEmployees()
+    {
+        person1 = await Http.GetFromJsonAsync<Persons[]>("/api/Clients/Get");
+    }
+
+}
